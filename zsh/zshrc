@@ -1,0 +1,55 @@
+#--------------------------------------------------------------------------
+# Oh My Zsh
+#--------------------------------------------------------------------------
+
+export ZSH=$HOME/.oh-my-zsh
+
+# add configurations, plugins
+ZSH_THEME="robbyrussell"
+
+plugins=(
+    npm
+    vi-mode
+    composer
+    cp
+    dnf
+    docker
+    docker-compose
+    git
+    httpie
+    rsync
+    tmux
+    z
+)
+
+source $ZSH/oh-my-zsh.sh
+
+#--------------------------------------------------------------------------
+# Miscellaneous
+#--------------------------------------------------------------------------
+
+alias vim="nvim"
+alias vi="nvim"
+alias oldvim="vim"
+
+NVM_DIR="$HOME/.nvm"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+
+# Herd injected PHP binary.
+export PATH="/Users/ghaas/Library/Application Support/Herd/bin/":$PATH
+
+
+# Herd injected PHP 8.2 configuration.
+export HERD_PHP_82_INI_SCAN_DIR="/Users/ghaas/Library/Application Support/Herd/config/php/82/"
+
+
+# Herd injected PHP 8.1 configuration.
+export HERD_PHP_81_INI_SCAN_DIR="/Users/ghaas/Library/Application Support/Herd/config/php/81/"
+
+
+# Herd injected PHP 8.3 configuration.
+export HERD_PHP_83_INI_SCAN_DIR="/Users/ghaas/Library/Application Support/Herd/config/php/83/"
+
+export PATH="/usr/local/sbin:$PATH"
