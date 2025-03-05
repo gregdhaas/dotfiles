@@ -53,3 +53,7 @@ export HERD_PHP_81_INI_SCAN_DIR="/Users/ghaas/Library/Application Support/Herd/c
 export HERD_PHP_83_INI_SCAN_DIR="/Users/ghaas/Library/Application Support/Herd/config/php/83/"
 
 export PATH="/usr/local/sbin:$PATH"
+
+
+# Herd injected PHP 8.4 configuration.
+export HERD_PHP_84_INI_SCAN_DIR="/Users/ghaas/Library/Application Support/Herd/config/php/84/"
