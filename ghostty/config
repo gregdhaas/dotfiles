@@ -1,0 +1,20 @@
+theme = catppuccin-mocha
+
+font-family="JetBrains Mono"
+font-size=13
+
+adjust-cell-height=30%
+adjust-cursor-height=30%
+
+confirm-close-surface = false
+clipboard-paste-protection = false
+unfocused-split-opacity = 1.0
+copy-on-select = clipboard
+
+cursor-style = block
+cursor-style-blink = false
+
+shell-integration-features = no-cursor
+
+keybind = global:ctrl+`=toggle_quick_terminal
+
