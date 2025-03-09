@@ -38,4 +38,4 @@ vim.opt.undofile = true -- persistent undo
 vim.opt.backup = true -- automatically save a backup file
 vim.opt.backupdir:remove(".") -- keep backups out of the current directory
 
-vim.g.lazyvim_php_lsp = "intelephense"
+-- vim.g.lazyvim_php_lsp = "intelephense"
