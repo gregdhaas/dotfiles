@@ -1,4 +1,4 @@
-theme = catppuccin-mocha
+theme = "Catppuccin Mocha"
 
 font-family="JetBrains Mono"
 font-size=13
@@ -16,5 +16,5 @@ cursor-style-blink = false
 
 shell-integration-features = no-cursor
 
-keybind = global:ctrl+`=toggle_quick_terminal
+keybind = ctrl+`=toggle_quick_terminal
 
