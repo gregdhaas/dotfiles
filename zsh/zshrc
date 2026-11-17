@@ -12,11 +12,9 @@ plugins=(
     vi-mode
     composer
     cp
-    dnf
     docker
     docker-compose
     git
-    httpie
     rsync
     tmux
     z
@@ -36,24 +34,18 @@ NVM_DIR="$HOME/.nvm"
   [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-
-# Herd injected PHP binary.
-export PATH="/Users/ghaas/Library/Application Support/Herd/bin/":$PATH
-
-
-# Herd injected PHP 8.2 configuration.
-export HERD_PHP_82_INI_SCAN_DIR="/Users/ghaas/Library/Application Support/Herd/config/php/82/"
-
-
-# Herd injected PHP 8.1 configuration.
-export HERD_PHP_81_INI_SCAN_DIR="/Users/ghaas/Library/Application Support/Herd/config/php/81/"
-
-
-# Herd injected PHP 8.3 configuration.
-export HERD_PHP_83_INI_SCAN_DIR="/Users/ghaas/Library/Application Support/Herd/config/php/83/"
+alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 
 export PATH="/usr/local/sbin:$PATH"
 
+# bun completions
+[ -s "/Users/ghaas/.bun/_bun" ] && source "/Users/ghaas/.bun/_bun"
 
-# Herd injected PHP 8.4 configuration.
-export HERD_PHP_84_INI_SCAN_DIR="/Users/ghaas/Library/Application Support/Herd/config/php/84/"
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+# Added by Antigravity CLI installer
+alias agy="$HOME/.local/bin/agy"
+alias antigravity="$HOME/.local/bin/agy"
