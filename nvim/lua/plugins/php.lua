@@ -1,91 +1,83 @@
+local phpcs_configs = { "phpcs.xml", ".phpcs.xml", "phpcs.xml.dist", ".phpcs.xml.dist" }
+
+local function has_phpcs_config(dirname)
+	return vim.fs.find(phpcs_configs, { path = dirname, upward = true })[1] ~= nil
+end
+
 return {
 	{
-		-- Remove phpcs linter.
+		-- Only lint with phpcs (e.g. WPCS) when the project ships a phpcs config.
 		"mfussenegger/nvim-lint",
 		optional = true,
 		opts = {
-			linters_by_ft = {
-				php = {},
+			linters_by_ft = { php = { "phpcs" } },
+			linters = {
+				phpcs = {
+					condition = function(ctx)
+						return has_phpcs_config(ctx.dirname)
+					end,
+				},
 			},
 		},
 	},
 	{
-		-- Add neotest-pest plugin for running PHP tests.
-		-- A package is also available for PHPUnit if needed.
+		-- Pint for Laravel projects, phpcbf for projects with a phpcs config.
+		"stevearc/conform.nvim",
+		optional = true,
+		opts = {
+			formatters_by_ft = { php = { "pint", "phpcbf" } },
+			formatters = {
+				pint = {
+					condition = function(_, ctx)
+						return vim.fs.find("vendor/bin/pint", { path = ctx.dirname, upward = true })[1] ~= nil
+					end,
+				},
+				phpcbf = {
+					condition = function(_, ctx)
+						return has_phpcs_config(ctx.dirname)
+					end,
+				},
+			},
+		},
+	},
+	{
+		"neovim/nvim-lspconfig",
+		opts = {
+			servers = {
+				-- Laravel-aware routes, views, config, Inertia, Livewire. Install: composer global require laravel/lsp
+				laravel_lsp = { mason = false },
+				intelephense = {
+					filetypes = { "php", "blade" },
+					settings = {
+						intelephense = {
+							-- Intelephense's default stubs plus WordPress (Woo: composer require --dev php-stubs/woocommerce-stubs).
+							stubs = {
+								"apache", "bcmath", "bz2", "calendar", "com_dotnet", "Core", "ctype", "curl", "date",
+								"dba", "dom", "enchant", "exif", "FFI", "fileinfo", "filter", "fpm", "ftp", "gd",
+								"gettext", "gmp", "hash", "iconv", "imap", "intl", "json", "ldap", "libxml",
+								"mbstring", "meta", "mysqli", "oci8", "odbc", "openssl", "pcntl", "pcre", "PDO",
+								"pdo_ibm", "pdo_mysql", "pdo_pgsql", "pdo_sqlite", "pgsql", "Phar", "posix",
+								"pspell", "readline", "Reflection", "session", "shmop", "SimpleXML", "snmp", "soap",
+								"sockets", "sodium", "SPL", "sqlite3", "standard", "superglobals", "sysvmsg",
+								"sysvsem", "sysvshm", "tidy", "tokenizer", "xml", "xmlreader", "xmlrpc",
+								"xmlwriter", "xsl", "Zend OPcache", "zip", "zlib",
+								"wordpress",
+							},
+						},
+					},
+				},
+			},
+		},
+	},
+	{ "mason-org/mason.nvim", opts = { ensure_installed = { "phpcbf" } } },
+	{
+		"nvim-treesitter/nvim-treesitter",
+		opts = { ensure_installed = { "blade", "php_only" } },
+	},
+	{
+		-- Pest test runner.
 		"nvim-neotest/neotest",
 		dependencies = { "V13Axel/neotest-pest" },
 		opts = { adapters = { "neotest-pest" } },
-	},
-	-- {
-	-- 	-- Add the Laravel.nvim plugin which gives the ability to run Artisan commands
-	-- 	-- from Neovim.
-	-- 	"adalessa/laravel.nvim",
-	-- 	dependencies = {
-	-- 		"nvim-telescope/telescope.nvim",
-	-- 		"tpope/vim-dotenv",
-	-- 		"MunifTanjim/nui.nvim",
-	-- 	},
-	-- 	cmd = { "Sail", "Artisan", "Composer", "Npm", "Yarn", "Laravel" },
-	-- 	keys = {
-	-- 		{ "<leader>la", ":Laravel artisan<cr>" },
-	-- 		{ "<leader>lr", ":Laravel routes<cr>" },
-	-- 		{ "<leader>lm", ":Laravel related<cr>" },
-	-- 	},
-	-- 	event = { "VeryLazy" },
-	-- 	config = true,
-	-- 	opts = {
-	-- 		lsp_server = "intelephense",
-	-- 		features = { null_ls = { enable = false } },
-	-- 	},
-	-- },
-	{
-		-- Add the blade-nav.nvim plugin which provides Goto File capabilities
-		-- for Blade files.
-		"ricardoramirezr/blade-nav.nvim",
-		dependencies = {
-			"hrsh7th/nvim-cmp",
-		},
-		ft = { "blade", "php" }, -- optional, improves startup time
-	},
-	{
-		-- Add a Treesitter parser for Laravel Blade to provide Blade syntax highlighting.
-		"nvim-treesitter/nvim-treesitter",
-		opts = function(_, opts)
-			vim.list_extend(opts.ensure_installed, {
-				"blade",
-				"php_only",
-			})
-		end,
-		config = function(_, opts)
-			vim.filetype.add({
-				pattern = {
-					[".*%.blade%.php"] = "blade",
-				},
-			})
-
-			require("nvim-treesitter.configs").setup(opts)
-			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-			parser_config["blade"] = {
-				install_info = {
-					url = "https://github.com/EmranMR/tree-sitter-blade",
-					files = { "src/parser.c" },
-					branch = "main",
-				},
-				filetype = "blade",
-			}
-		end,
-	},
-	-- add pyright to lspconfig
-	{
-		"neovim/nvim-lspconfig",
-		---@class PluginLspOpts
-		opts = {
-			---@type lspconfig.options
-			servers = {
-				phpactor = {
-					filetypes = { "php", "blade", "php_only" },
-				},
-			},
-		},
 	},
 }
