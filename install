@@ -16,6 +16,11 @@ ln -s $DOTFILES/scripts/t /usr/local/bin/t
 rm -rf $HOME/.config/nvim
 ln -s $DOTFILES/nvim $HOME/.config/nvim
 
+# Laravel LSP (used by nvim; not available through Mason)
+if command -v composer >/dev/null 2>&1; then
+    composer global require laravel/lsp
+fi
+
 # phpactor
 rm -rf $HOME/.config/phpactor
 ln -s $DOTFILES/phpactor $HOME/.config/phpactor
